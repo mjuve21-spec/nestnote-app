@@ -1,77 +1,77 @@
 'use client'
-import { Plus, Search } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase'
 
 export default function Families() {
-  const families = [
-    { name: 'Maria Santos', baby: 'Sofia', week: 3, status: 'flagged', site: 'Downtown Clinic', birth_type: 'cesarean', phone: '555-0101' },
-    { name: 'Jessica Lee', baby: 'Noah', week: 7, status: 'active', site: 'Westside OB', birth_type: 'vaginal', phone: '555-0102' },
-    { name: 'Amara Osei', baby: 'Kwame', week: 11, status: 'active', site: 'Downtown Clinic', birth_type: 'vaginal', phone: '555-0103' },
-    { name: 'Taylor Brown', baby: 'Riley', week: 1, status: 'active', site: 'Midwifery Center', birth_type: 'vaginal', phone: '555-0104' },
-  ]
+  const [families, setFamilies] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+
+  useEffect(() => { fetchFamilies() }, [])
+
+  async function fetchFamilies() {
+    const { data, error } = await supabase.from('families').select('*').order('created_at', { ascending: false })
+    if (error) console.error(error)
+    else setFamilies(data)
+    setLoading(false)
+  }
+
+  const filtered = families.filter(f => f.primary_name?.toLowerCase().includes(search.toLowerCase()))
 
   return (
-    <div className="min-h-screen" style={{background: '#fdf8f3'}}>
-      <nav style={{background: '#7c9e6e'}} className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🪺</span>
-          <span className="font-bold text-xl text-white">NestNote</span>
-        </div>
-        <div className="flex gap-6 text-sm font-medium text-green-100">
-          <a href="/dashboard" className="hover:text-white">Dashboard</a>
-          <a href="/families" className="text-white font-semibold">Families</a>
-          <a href="/reports" className="hover:text-white">Reports</a>
-          <a href="/templates" className="hover:text-white">Templates</a>
-          <a href="/settings" className="hover:text-white">Settings</a>
+    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
+      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
+        <div style={{display:'flex',gap:'2rem'}}>
+          {['dashboard','families','reports','templates','settings'].map(p => (
+            <a key={p} href={`/${p}`} style={{color: p==='families' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='families' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+          ))}
         </div>
       </nav>
-      <main className="p-6 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+      <main style={{maxWidth:'1100px',margin:'0 auto',padding:'2rem 1.5rem'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1.5rem'}}>
           <div>
-            <h1 className="text-2xl font-bold" style={{color: '#2d2416'}}>Families</h1>
-            <p className="mt-1" style={{color: '#9a7f60'}}>4 active families across 3 sites</p>
+            <h1 style={{fontSize:'1.5rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>Families</h1>
+            <p style={{color:'#6b7280',fontSize:'0.875rem',marginTop:'0.25rem'}}>{families.length} active families</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white" style={{background: '#c4845a'}}>
-            <Plus size={16}/> Add Family
-          </button>
+          <a href="/families/add" style={{background:'#2c4a3e',color:'white',padding:'0.5rem 1.25rem',borderRadius:'0.5rem',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>+ Add Family</a>
         </div>
-        <div className="rounded-xl border overflow-hidden" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-          <div className="p-4 border-b" style={{borderColor: '#e8d9c8'}}>
-            <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-72" style={{background: '#fdf8f3'}}>
-              <Search size={16} style={{color: '#9a7f60'}}/>
-              <input placeholder="Search families..." className="bg-transparent text-sm outline-none w-full" style={{color: '#2d2416'}}/>
-            </div>
+        <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',overflow:'hidden'}}>
+          <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid #e5e7eb'}}>
+            <input placeholder="Search families..." value={search} onChange={e=>setSearch(e.target.value)} style={{padding:'0.5rem 0.75rem',border:'1px solid #e5e7eb',borderRadius:'0.5rem',fontSize:'0.875rem',outline:'none',width:'260px'}}/>
           </div>
-          <table className="w-full">
-            <thead className="text-xs uppercase" style={{background: '#f5ede3', color: '#9a7f60'}}>
-              <tr>
-                <th className="text-left px-4 py-3">Family</th>
-                <th className="text-left px-4 py-3">Baby</th>
-                <th className="text-left px-4 py-3">Week</th>
-                <th className="text-left px-4 py-3">Birth Type</th>
-                <th className="text-left px-4 py-3">Site</th>
-                <th className="text-left px-4 py-3">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y" style={{borderColor: '#e8d9c8'}}>
-              {families.map((f) => (
-                <tr key={f.name} className="cursor-pointer hover:opacity-80" style={{background: '#ffffff'}}>
-                  <td className="px-4 py-4">
-                    <p className="font-medium" style={{color: '#2d2416'}}>{f.name}</p>
-                    <p className="text-xs" style={{color: '#9a7f60'}}>{f.phone}</p>
-                  </td>
-                  <td className="px-4 py-4" style={{color: '#5c4a2a'}}>{f.baby}</td>
-                  <td className="px-4 py-4" style={{color: '#5c4a2a'}}>Week {f.week}</td>
-                  <td className="px-4 py-4 capitalize" style={{color: '#5c4a2a'}}>{f.birth_type}</td>
-                  <td className="px-4 py-4" style={{color: '#5c4a2a'}}>{f.site}</td>
-                  <td className="px-4 py-4">
-                    <span className="text-xs px-2 py-1 rounded-full font-medium" style={f.status === 'flagged' ? {background: '#fde8e8', color: '#c0392b'} : {background: '#e8f5e3', color: '#7c9e6e'}}>
-                      {f.status}
-                    </span>
-                  </td>
+          {loading ? (
+            <div style={{padding:'3rem',textAlign:'center',color:'#6b7280'}}>Loading...</div>
+          ) : filtered.length === 0 ? (
+            <div style={{padding:'3rem',textAlign:'center',color:'#6b7280'}}>No families yet. Add your first family!</div>
+          ) : (
+            <table style={{width:'100%',borderCollapse:'collapse'}}>
+              <thead>
+                <tr style={{background:'#f9fafb'}}>
+                  {['Family','Phone','Birth Date','Status'].map(h => (
+                    <th key={h} style={{textAlign:'left',padding:'0.75rem 1.25rem',fontSize:'0.75rem',fontWeight:'600',color:'#6b7280',textTransform:'uppercase',letterSpacing:'0.05em'}}>{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map((f,i) => (
+                  <tr key={f.id} onClick={() => window.location.href=`/families/${f.id}`} style={{borderTop:'1px solid #e5e7eb',background: i%2===0 ? 'white' : '#fafafa',cursor:'pointer'}}>
+                    <td style={{padding:'1rem 1.25rem'}}>
+                      <p style={{fontWeight:'600',color:'#1a1a1a',margin:0}}>{f.primary_name}</p>
+                      {f.secondary_name && <p style={{fontSize:'0.8rem',color:'#6b7280',margin:'0.1rem 0 0'}}>{f.secondary_name}</p>}
+                    </td>
+                    <td style={{padding:'1rem 1.25rem',color:'#4b5563',fontSize:'0.875rem'}}>{f.phone || '—'}</td>
+                    <td style={{padding:'1rem 1.25rem',color:'#4b5563',fontSize:'0.875rem'}}>{f.birth_date || '—'}</td>
+                    <td style={{padding:'1rem 1.25rem'}}>
+                      <span style={{fontSize:'0.75rem',padding:'0.25rem 0.75rem',borderRadius:'9999px',fontWeight:'500',background: f.status==='flagged' ? '#fee2e2' : '#dcfce7', color: f.status==='flagged' ? '#dc2626' : '#16a34a'}}>
+                        {f.status || 'active'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </main>
     </div>

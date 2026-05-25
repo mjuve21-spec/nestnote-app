@@ -35,14 +35,10 @@ export default function FamilyCheckin() {
 
   return (
     <div style={{minHeight:'100vh',background:'#f5f4f2',display:'flex',flexDirection:'column'}}>
-      
-      {/* Header */}
       <div style={{background:'#2c4a3e',padding:'1rem 1.5rem',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <span style={{fontWeight:'700',fontSize:'1rem',color:'white'}}>NestNote</span>
         <span style={{color:'#a8c5b5',fontSize:'0.8rem'}}>Daily Check-in</span>
       </div>
-
-      {/* Progress */}
       <div style={{background:'white',padding:'1rem 1.5rem',borderBottom:'1px solid #e5e7eb'}}>
         <div style={{display:'flex',gap:'0.5rem'}}>
           {[1,2,3,4].map(s => (
@@ -51,10 +47,7 @@ export default function FamilyCheckin() {
         </div>
         <p style={{fontSize:'0.75rem',color:'#6b7280',margin:'0.5rem 0 0'}}>Step {step} of 4</p>
       </div>
-
       <div style={{flex:1,padding:'1.5rem',maxWidth:'500px',margin:'0 auto',width:'100%'}}>
-
-        {/* Step 1 - Mood */}
         {step === 1 && (
           <div>
             <h2 style={{fontSize:'1.25rem',fontWeight:'700',color:'#1a1a1a',margin:'0 0 0.5rem'}}>How are you feeling today?</h2>
@@ -81,8 +74,6 @@ export default function FamilyCheckin() {
             </div>
           </div>
         )}
-
-        {/* Step 2 - Pain */}
         {step === 2 && (
           <div>
             <h2 style={{fontSize:'1.25rem',fontWeight:'700',color:'#1a1a1a',margin:'0 0 0.5rem'}}>Pain level today?</h2>
@@ -96,11 +87,6 @@ export default function FamilyCheckin() {
               <input type="range" min="0" max="10" value={form.pain}
                 onChange={e => setForm({...form, pain: parseInt(e.target.value)})}
                 style={{width:'100%',accentColor:'#2c4a3e'}}/>
-              <div style={{display:'flex',justifyContent:'space-between',marginTop:'0.5rem'}}>
-                {[0,1,2,3,4,5,6,7,8,9,10].map(n => (
-                  <span key={n} style={{fontSize:'0.65rem',color:'#9ca3af'}}>{n}</span>
-                ))}
-              </div>
             </div>
             <div style={{display:'flex',gap:'0.75rem'}}>
               <button onClick={() => setStep(1)} style={{flex:1,padding:'0.75rem',border:'1px solid #e5e7eb',borderRadius:'0.5rem',background:'white',color:'#374151',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>Back</button>
@@ -108,8 +94,6 @@ export default function FamilyCheckin() {
             </div>
           </div>
         )}
-
-        {/* Step 3 - Bleeding */}
         {step === 3 && (
           <div>
             <h2 style={{fontSize:'1.25rem',fontWeight:'700',color:'#1a1a1a',margin:'0 0 0.5rem'}}>How is your bleeding today?</h2>
@@ -136,14 +120,12 @@ export default function FamilyCheckin() {
             <button onClick={() => setStep(2)} style={{width:'100%',padding:'0.75rem',border:'1px solid #e5e7eb',borderRadius:'0.5rem',background:'white',color:'#374151',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>Back</button>
           </div>
         )}
-
-        {/* Step 4 - Notes */}
         {step === 4 && (
           <div>
             <h2 style={{fontSize:'1.25rem',fontWeight:'700',color:'#1a1a1a',margin:'0 0 0.5rem'}}>Anything else to share?</h2>
-            <p style={{color:'#6b7280',fontSize:'0.875rem',margin:'0 0 2rem'}}>Optional — any concerns, questions or notes for your care team.</p>
+            <p style={{color:'#6b7280',fontSize:'0.875rem',margin:'0 0 2rem'}}>Optional — any concerns or notes for your care team.</p>
             <textarea value={form.notes} onChange={e => setForm({...form, notes: e.target.value})}
-              placeholder="e.g. Having trouble sleeping, feeling anxious about..."
+              placeholder="e.g. Having trouble sleeping, feeling anxious..."
               rows={5}
               style={{width:'100%',padding:'0.875rem',border:'1px solid #e5e7eb',borderRadius:'0.75rem',fontSize:'0.875rem',outline:'none',boxSizing:'border-box',resize:'none',marginBottom:'1.5rem',color:'#1a1a1a'}}/>
             <div style={{display:'flex',gap:'0.75rem'}}>
@@ -154,7 +136,6 @@ export default function FamilyCheckin() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

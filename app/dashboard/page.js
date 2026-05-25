@@ -3,73 +3,68 @@ import { Users, AlertTriangle, CheckSquare, TrendingUp } from 'lucide-react'
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen" style={{background: '#fdf8f3'}}>
-      <nav style={{background: '#7c9e6e'}} className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🪺</span>
-          <span className="font-bold text-xl text-white">NestNote</span>
-        </div>
-        <div className="flex gap-6 text-sm font-medium text-green-100">
-          <a href="/dashboard" className="text-white font-semibold">Dashboard</a>
-          <a href="/families" className="hover:text-white">Families</a>
-          <a href="/reports" className="hover:text-white">Reports</a>
-          <a href="/templates" className="hover:text-white">Templates</a>
-          <a href="/settings" className="hover:text-white">Settings</a>
+    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
+      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
+        <div style={{display:'flex',gap:'2rem'}}>
+          {['dashboard','families','reports','templates','settings'].map(p => (
+            <a key={p} href={`/${p}`} style={{color: p==='dashboard' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='dashboard' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+          ))}
         </div>
       </nav>
-      <main className="p-6 max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mt-2" style={{color: '#2d2416'}}>Good morning 👋</h1>
-        <p className="mt-1 mb-6" style={{color: '#9a7f60'}}>Here's what needs your attention today.</p>
-        <div className="grid grid-cols-4 gap-4 mb-8">
-          <div className="rounded-xl p-5 border" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-            <div className="flex items-center gap-3 mb-2">
-              <Users style={{color: '#7c9e6e'}} size={20}/>
-              <span className="text-sm" style={{color: '#9a7f60'}}>Active Families</span>
-            </div>
-            <p className="text-3xl font-bold" style={{color: '#2d2416'}}>4</p>
-          </div>
-          <div className="rounded-xl p-5 border" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-            <div className="flex items-center gap-3 mb-2">
-              <AlertTriangle style={{color: '#c0392b'}} size={20}/>
-              <span className="text-sm" style={{color: '#9a7f60'}}>Flagged</span>
-            </div>
-            <p className="text-3xl font-bold" style={{color: '#2d2416'}}>1</p>
-          </div>
-          <div className="rounded-xl p-5 border" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-            <div className="flex items-center gap-3 mb-2">
-              <CheckSquare style={{color: '#7c9e6e'}} size={20}/>
-              <span className="text-sm" style={{color: '#9a7f60'}}>Check-ins Today</span>
-            </div>
-            <p className="text-3xl font-bold" style={{color: '#2d2416'}}>3</p>
-          </div>
-          <div className="rounded-xl p-5 border" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-            <div className="flex items-center gap-3 mb-2">
-              <TrendingUp style={{color: '#c4845a'}} size={20}/>
-              <span className="text-sm" style={{color: '#9a7f60'}}>Tasks Due</span>
-            </div>
-            <p className="text-3xl font-bold" style={{color: '#2d2416'}}>7</p>
-          </div>
+      <main style={{maxWidth:'1100px',margin:'0 auto',padding:'2rem 1.5rem'}}>
+        <div style={{marginBottom:'2rem'}}>
+          <h1 style={{fontSize:'1.5rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>Good morning</h1>
+          <p style={{color:'#6b7280',fontSize:'0.875rem',marginTop:'0.25rem'}}>Here's what needs your attention today.</p>
         </div>
-        <div className="rounded-xl border p-5" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-          <h2 className="font-semibold mb-4" style={{color: '#2d2416'}}>Active Families</h2>
-          <div className="space-y-3">
-            {[
-              { name: 'Maria Santos', week: 3, status: 'flagged', site: 'Downtown Clinic' },
-              { name: 'Jessica Lee', week: 7, status: 'active', site: 'Westside OB' },
-              { name: 'Amara Osei', week: 11, status: 'active', site: 'Downtown Clinic' },
-              { name: 'Taylor Brown', week: 1, status: 'active', site: 'Midwifery Center' },
-            ].map((f) => (
-              <div key={f.name} className="flex items-center justify-between p-3 rounded-lg cursor-pointer hover:opacity-80" style={{background: '#fdf8f3'}}>
-                <div>
-                  <p className="font-medium" style={{color: '#2d2416'}}>{f.name}</p>
-                  <p className="text-sm" style={{color: '#9a7f60'}}>{f.site} · Week {f.week}</p>
-                </div>
-                <span className="text-xs px-2 py-1 rounded-full font-medium" style={f.status === 'flagged' ? {background: '#fde8e8', color: '#c0392b'} : {background: '#e8f5e3', color: '#7c9e6e'}}>
-                  {f.status}
-                </span>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1rem',marginBottom:'2rem'}}>
+          {[
+            {icon: Users, label:'Active Families', value:'4', color:'#2c4a3e'},
+            {icon: AlertTriangle, label:'Flagged', value:'1', color:'#dc2626'},
+            {icon: CheckSquare, label:'Check-ins Today', value:'3', color:'#2c4a3e'},
+            {icon: TrendingUp, label:'Tasks Due', value:'7', color:'#d97706'},
+          ].map(({icon: Icon, label, value, color}) => (
+            <div key={label} style={{background:'white',borderRadius:'0.75rem',padding:'1.25rem',border:'1px solid #e5e7eb'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'0.75rem',marginBottom:'0.75rem'}}>
+                <Icon size={18} color={color}/>
+                <span style={{fontSize:'0.8rem',color:'#6b7280',fontWeight:'500'}}>{label}</span>
               </div>
-            ))}
+              <p style={{fontSize:'2rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>{value}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',overflow:'hidden'}}>
+          <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid #e5e7eb'}}>
+            <h2 style={{fontWeight:'600',color:'#1a1a1a',margin:0,fontSize:'0.95rem'}}>Active Families</h2>
           </div>
+          <table style={{width:'100%',borderCollapse:'collapse'}}>
+            <thead>
+              <tr style={{background:'#f9fafb'}}>
+                {['Name','Site','Week','Status'].map(h => (
+                  <th key={h} style={{textAlign:'left',padding:'0.75rem 1.25rem',fontSize:'0.75rem',fontWeight:'600',color:'#6b7280',textTransform:'uppercase',letterSpacing:'0.05em'}}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                {name:'Maria Santos', week:3, status:'flagged', site:'Downtown Clinic'},
+                {name:'Jessica Lee', week:7, status:'active', site:'Westside OB'},
+                {name:'Amara Osei', week:11, status:'active', site:'Downtown Clinic'},
+                {name:'Taylor Brown', week:1, status:'active', site:'Midwifery Center'},
+              ].map((f,i) => (
+                <tr key={f.name} style={{borderTop:'1px solid #e5e7eb',background: i%2===0 ? 'white' : '#fafafa',cursor:'pointer'}}>
+                  <td style={{padding:'1rem 1.25rem',fontWeight:'600',color:'#1a1a1a',fontSize:'0.875rem'}}>{f.name}</td>
+                  <td style={{padding:'1rem 1.25rem',color:'#4b5563',fontSize:'0.875rem'}}>{f.site}</td>
+                  <td style={{padding:'1rem 1.25rem',color:'#4b5563',fontSize:'0.875rem'}}>Week {f.week}</td>
+                  <td style={{padding:'1rem 1.25rem'}}>
+                    <span style={{fontSize:'0.75rem',padding:'0.25rem 0.75rem',borderRadius:'9999px',fontWeight:'500',background: f.status==='flagged' ? '#fee2e2' : '#dcfce7', color: f.status==='flagged' ? '#dc2626' : '#16a34a'}}>
+                      {f.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </main>
     </div>

@@ -15,66 +15,57 @@ export default function Templates() {
   ]
 
   const categoryColors = {
-    self_care: { bg: '#e8f5e3', color: '#7c9e6e' },
-    lactation: { bg: '#fef3e2', color: '#c4845a' },
-    wound_care: { bg: '#fde8e8', color: '#c0392b' },
-    newborn_milestone: { bg: '#e8f0fe', color: '#4a6fa5' },
-    paperwork: { bg: '#f5ede3', color: '#9a7f60' },
-    appointment: { bg: '#f3e8fe', color: '#7c5cbf' },
-    medical: { bg: '#fde8e8', color: '#c0392b' },
+    self_care: {background:'#dcfce7',color:'#16a34a'},
+    lactation: {background:'#fef3c7',color:'#d97706'},
+    wound_care: {background:'#fee2e2',color:'#dc2626'},
+    newborn_milestone: {background:'#dbeafe',color:'#2563eb'},
+    paperwork: {background:'#f3f4f6',color:'#6b7280'},
+    appointment: {background:'#ede9fe',color:'#7c3aed'},
+    medical: {background:'#fee2e2',color:'#dc2626'},
   }
 
   return (
-    <div className="min-h-screen" style={{background: '#fdf8f3'}}>
-      <nav style={{background: '#7c9e6e'}} className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🪺</span>
-          <span className="font-bold text-xl text-white">NestNote</span>
-        </div>
-        <div className="flex gap-6 text-sm font-medium text-green-100">
-          <a href="/dashboard" className="hover:text-white">Dashboard</a>
-          <a href="/families" className="hover:text-white">Families</a>
-          <a href="/reports" className="hover:text-white">Reports</a>
-          <a href="/templates" className="text-white font-semibold">Templates</a>
-          <a href="/settings" className="hover:text-white">Settings</a>
+    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
+      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
+        <div style={{display:'flex',gap:'2rem'}}>
+          {['dashboard','families','reports','templates','settings'].map(p => (
+            <a key={p} href={`/${p}`} style={{color: p==='templates' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='templates' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+          ))}
         </div>
       </nav>
-      <main className="p-6 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+      <main style={{maxWidth:'1100px',margin:'0 auto',padding:'2rem 1.5rem'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1.5rem'}}>
           <div>
-            <h1 className="text-2xl font-bold" style={{color: '#2d2416'}}>Task Templates</h1>
-            <p className="mt-1" style={{color: '#9a7f60'}}>12-week postpartum task library</p>
+            <h1 style={{fontSize:'1.5rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>Task Templates</h1>
+            <p style={{color:'#6b7280',fontSize:'0.875rem',marginTop:'0.25rem'}}>12-week postpartum task library</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white" style={{background: '#c4845a'}}>
-            <Plus size={16}/> New Template
+          <button style={{display:'flex',alignItems:'center',gap:'0.5rem',background:'#2c4a3e',color:'white',padding:'0.5rem 1.25rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
+            <Plus size={15}/> New Template
           </button>
         </div>
-        <div className="rounded-xl border overflow-hidden" style={{background: '#ffffff', borderColor: '#e8d9c8'}}>
-          <table className="w-full">
-            <thead className="text-xs uppercase" style={{background: '#f5ede3', color: '#9a7f60'}}>
-              <tr>
-                <th className="text-left px-4 py-3">Task</th>
-                <th className="text-left px-4 py-3">Category</th>
-                <th className="text-left px-4 py-3">Week</th>
-                <th className="text-left px-4 py-3">Assigned To</th>
-                <th className="text-left px-4 py-3">Birth Type</th>
+        <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',overflow:'hidden'}}>
+          <table style={{width:'100%',borderCollapse:'collapse'}}>
+            <thead>
+              <tr style={{background:'#f9fafb'}}>
+                {['Task','Category','Week','Assigned To','Birth Type'].map(h => (
+                  <th key={h} style={{textAlign:'left',padding:'0.75rem 1.25rem',fontSize:'0.75rem',fontWeight:'600',color:'#6b7280',textTransform:'uppercase',letterSpacing:'0.05em'}}>{h}</th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y" style={{borderColor: '#e8d9c8'}}>
-              {templates.map((t, i) => (
-                <tr key={i} className="cursor-pointer hover:opacity-80" style={{background: '#ffffff'}}>
-                  <td className="px-4 py-4 font-medium" style={{color: '#2d2416'}}>{t.title}</td>
-                  <td className="px-4 py-4">
-                    <span className="text-xs px-2 py-1 rounded-full font-medium capitalize"
-                      style={categoryColors[t.category] || {bg: '#f5ede3', color: '#9a7f60'}}>
-                      {t.category.replace('_', ' ')}
+            <tbody>
+              {templates.map((t,i) => (
+                <tr key={i} style={{borderTop:'1px solid #e5e7eb',background: i%2===0 ? 'white' : '#fafafa',cursor:'pointer'}}>
+                  <td style={{padding:'1rem 1.25rem',fontWeight:'500',color:'#1a1a1a',fontSize:'0.875rem'}}>{t.title}</td>
+                  <td style={{padding:'1rem 1.25rem'}}>
+                    <span style={{fontSize:'0.75rem',padding:'0.25rem 0.75rem',borderRadius:'9999px',fontWeight:'500',textTransform:'capitalize', ...(categoryColors[t.category] || {background:'#f3f4f6',color:'#6b7280'})}}>
+                      {t.category.replace('_',' ')}
                     </span>
                   </td>
-                  <td className="px-4 py-4" style={{color: '#5c4a2a'}}>Week {t.week}</td>
-                  <td className="px-4 py-4 capitalize" style={{color: '#5c4a2a'}}>{t.assigned_to.replace('_', ' ')}</td>
-                  <td className="px-4 py-4">
-                    <span className="text-xs px-2 py-1 rounded-full font-medium capitalize"
-                      style={t.birth_types === 'cesarean' ? {background: '#fde8e8', color: '#c0392b'} : {background: '#e8f5e3', color: '#7c9e6e'}}>
+                  <td style={{padding:'1rem 1.25rem',color:'#4b5563',fontSize:'0.875rem'}}>Week {t.week}</td>
+                  <td style={{padding:'1rem 1.25rem',color:'#4b5563',fontSize:'0.875rem',textTransform:'capitalize'}}>{t.assigned_to.replace('_',' ')}</td>
+                  <td style={{padding:'1rem 1.25rem'}}>
+                    <span style={{fontSize:'0.75rem',padding:'0.25rem 0.75rem',borderRadius:'9999px',fontWeight:'500',background: t.birth_types==='cesarean' ? '#fee2e2' : '#dcfce7', color: t.birth_types==='cesarean' ? '#dc2626' : '#16a34a',textTransform:'capitalize'}}>
                       {t.birth_types}
                     </span>
                   </td>
