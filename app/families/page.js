@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createClient } from "@/lib/supabase"
+
+const supabase = createClient()
 
 export default function Families() {
   const [families, setFamilies] = useState([])

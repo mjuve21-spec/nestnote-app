@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { createClient } from "@/lib/supabase";
+
+const supabase = createClient()
 
 export default function EditFamily() {
   const { id } = useParams();
