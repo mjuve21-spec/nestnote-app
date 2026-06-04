@@ -14,7 +14,7 @@ export default function LandingPage() {
     <div style={{minHeight:'100vh',background:'#fafaf8'}}>
       <nav style={{padding:'1.25rem 2rem',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid #e5e7eb',background:'white'}}>
         <span style={{fontWeight:'700',fontSize:'1.1rem',color:'#2c4a3e'}}>NestNote</span>
-        <a href="/dashboard" style={{background:'#2c4a3e',color:'white',padding:'0.5rem 1.25rem',borderRadius:'0.5rem',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>Sign In</a>
+        <a href="/login" style={{background:'#2c4a3e',color:'white',padding:'0.5rem 1.25rem',borderRadius:'0.5rem',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>Sign In</a>
       </nav>
       <section style={{maxWidth:'720px',margin:'0 auto',padding:'5rem 2rem 4rem',textAlign:'center'}}>
         <div style={{display:'inline-block',background:'#f0f7f4',color:'#2c4a3e',padding:'0.375rem 1rem',borderRadius:'9999px',fontSize:'0.8rem',fontWeight:'600',letterSpacing:'0.05em',marginBottom:'2rem'}}>FOR POSTPARTUM CARE COORDINATORS</div>
