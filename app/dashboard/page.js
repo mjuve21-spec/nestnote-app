@@ -11,7 +11,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetchFamilies() {
-      const { data } = await supabase.from('families').select('*').order('created_at', { ascending: false });
+      const { data } = await supabase.from('families').select('*').eq('archived', false).order('created_at', { ascending: false });
       setFamilies(data || []);
       setLoading(false);
     }
