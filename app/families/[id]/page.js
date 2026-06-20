@@ -13,6 +13,7 @@ export default function FamilyDetail() {
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [archiving, setArchiving] = useState(false);
   const [form, setForm] = useState({ mood: '3', pain: '0', bleeding: 'none', notes: '' });
 
   useEffect(() => { fetchFamily(); fetchCheckins(); }, [id]);
@@ -48,6 +49,18 @@ export default function FamilyDetail() {
     fetchFamily();
   }
 
+  async function archiveFamily() {
+    if (!confirm('Archive this family? They will be hidden from the main list but can be found by searching.')) return;
+    setArchiving(true);
+    await supabase.from('families').update({ archived: true }).eq('id', id);
+    window.location.href = '/families';
+  }
+
+  async function unarchiveFamily() {
+    await supabase.from('families').update({ archived: false }).eq('id', id);
+    fetchFamily();
+  }
+
   function copyCheckinLink() {
     navigator.clipboard.writeText(`${window.location.origin}/checkin/${id}`);
     setCopied(true);
@@ -80,8 +93,21 @@ export default function FamilyDetail() {
               {copied ? 'Copied!' : 'Copy Check-in Link'}
             </button>
             <a href={`/families/${id}/edit`} style={{background:'#f3f4f6',color:'#374151',padding:'0.375rem 1rem',borderRadius:'0.5rem',fontSize:'0.8rem',fontWeight:'500',textDecoration:'none',border:'1px solid #e5e7eb'}}>Edit</a>
+            {family.archived ? (
+              <button onClick={unarchiveFamily} style={{background:'#f3f4f6',color:'#374151',padding:'0.375rem 1rem',borderRadius:'0.5rem',fontSize:'0.8rem',fontWeight:'500',border:'1px solid #e5e7eb',cursor:'pointer'}}>Unarchive</button>
+            ) : (
+              <button onClick={archiveFamily} disabled={archiving} style={{background:'#fee2e2',color:'#dc2626',padding:'0.375rem 1rem',borderRadius:'0.5rem',fontSize:'0.8rem',fontWeight:'500',border:'1px solid #fca5a5',cursor:'pointer'}}>
+                {archiving ? 'Archiving...' : 'Archive'}
+              </button>
+            )}
           </div>
         </div>
+
+        {family.archived && (
+          <div style={{marginBottom:'1rem',padding:'0.75rem 1rem',background:'#fef9c3',border:'1px solid #fde047',borderRadius:'0.5rem',fontSize:'0.875rem',color:'#854d0e'}}>
+            This family is archived and hidden from the main list.
+          </div>
+        )}
 
         <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',padding:'1.5rem',marginBottom:'1rem'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
