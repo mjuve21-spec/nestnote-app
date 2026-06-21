@@ -34,12 +34,12 @@ export default function Settings() {
   }
 
   return (
-    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
-      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div style={{minHeight:'100vh',background:'#faf6ef'}}>
+      <nav style={{background:'#7a9582',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
         <div style={{display:'flex',gap:'2rem'}}>
           {['dashboard','families','reports','templates','settings'].map(p => (
-            <a key={p} href={'/' + p} style={{color: p==='settings' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='settings' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+            <a key={p} href={'/' + p} style={{color: p==='settings' ? 'white' : '#dce5d8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='settings' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
           ))}
         </div>
       </nav>
@@ -88,7 +88,7 @@ export default function Settings() {
               </select>
             </div>
           </div>
-          <button type="submit" style={{padding:'0.75rem',background:'#2c4a3e',color:'white',border:'none',borderRadius:'0.5rem',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
+          <button type="submit" style={{padding:'0.75rem',background:'#7a9582',color:'white',border:'none',borderRadius:'0.5rem',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
             {saved ? 'Saved!' : 'Save Settings'}
           </button>
         </form>

@@ -67,27 +67,27 @@ export default function FamilyDetail() {
     setTimeout(() => setCopied(false), 2000);
   }
 
-  if (loading) return <div style={{minHeight:'100vh',background:'#f5f4f2',display:'flex',alignItems:'center',justifyContent:'center'}}><p style={{color:'#6b7280'}}>Loading...</p></div>;
-  if (!family) return <div style={{minHeight:'100vh',background:'#f5f4f2',display:'flex',alignItems:'center',justifyContent:'center'}}><p style={{color:'#6b7280'}}>Family not found.</p></div>;
+  if (loading) return <div style={{minHeight:'100vh',background:'#faf6ef',display:'flex',alignItems:'center',justifyContent:'center'}}><p style={{color:'#6b7280'}}>Loading...</p></div>;
+  if (!family) return <div style={{minHeight:'100vh',background:'#faf6ef',display:'flex',alignItems:'center',justifyContent:'center'}}><p style={{color:'#6b7280'}}>Family not found.</p></div>;
 
   const moodLabel = ['','Very Low','Low','Okay','Good','Great'];
   const bleedingColors = { none: '#dcfce7', light: '#fef9c3', moderate: '#fed7aa', heavy: '#fee2e2' };
   const bleedingText = { none: '#16a34a', light: '#ca8a04', moderate: '#ea580c', heavy: '#dc2626' };
 
   return (
-    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
-      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div style={{minHeight:'100vh',background:'#faf6ef'}}>
+      <nav style={{background:'#7a9582',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
         <div style={{display:'flex',gap:'2rem'}}>
           {['dashboard','families','reports','templates','settings'].map(p => (
-            <a key={p} href={`/${p}`} style={{color: p==='families' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='families' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+            <a key={p} href={`/${p}`} style={{color: p==='families' ? 'white' : '#dce5d8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='families' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
           ))}
         </div>
       </nav>
       <main style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.5rem'}}>
 
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1.5rem'}}>
-          <a href="/families" style={{color:'#2c4a3e',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>← Back to Families</a>
+          <a href="/families" style={{color:'#7a9582',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>← Back to Families</a>
           <div style={{display:'flex',gap:'0.5rem'}}>
             <button onClick={copyCheckinLink} style={{background: copied ? '#dcfce7' : '#f3f4f6',color: copied ? '#16a34a' : '#374151',padding:'0.375rem 1rem',borderRadius:'0.5rem',fontSize:'0.8rem',fontWeight:'500',border:'1px solid #e5e7eb',cursor:'pointer'}}>
               {copied ? 'Copied!' : 'Copy Check-in Link'}
@@ -150,7 +150,7 @@ export default function FamilyDetail() {
         <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',padding:'1.5rem'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1rem'}}>
             <h2 style={{fontWeight:'600',color:'#1a1a1a',margin:0,fontSize:'0.95rem'}}>Check-ins ({checkins.length})</h2>
-            <button onClick={() => setShowForm(!showForm)} style={{background:'#2c4a3e',color:'white',padding:'0.375rem 1rem',borderRadius:'0.5rem',border:'none',fontSize:'0.8rem',fontWeight:'500',cursor:'pointer'}}>
+            <button onClick={() => setShowForm(!showForm)} style={{background:'#7a9582',color:'white',padding:'0.375rem 1rem',borderRadius:'0.5rem',border:'none',fontSize:'0.8rem',fontWeight:'500',cursor:'pointer'}}>
               {showForm ? 'Cancel' : '+ New Check-in'}
             </button>
           </div>
@@ -186,7 +186,7 @@ export default function FamilyDetail() {
                 <label style={{display:'block',fontSize:'0.8rem',fontWeight:'500',color:'#374151',marginBottom:'0.25rem'}}>Notes</label>
                 <textarea value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} rows={2} style={{width:'100%',padding:'0.5rem',border:'1px solid #d1d5db',borderRadius:'0.5rem',fontSize:'0.875rem',outline:'none',boxSizing:'border-box',resize:'vertical'}}/>
               </div>
-              <button type="submit" disabled={submitting} style={{background:'#2c4a3e',color:'white',padding:'0.5rem 1rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
+              <button type="submit" disabled={submitting} style={{background:'#7a9582',color:'white',padding:'0.5rem 1rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
                 {submitting ? 'Saving...' : 'Save Check-in'}
               </button>
             </form>

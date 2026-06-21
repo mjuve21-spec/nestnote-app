@@ -38,12 +38,12 @@ export default function Templates() {
   }
 
   return (
-    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
-      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div style={{minHeight:'100vh',background:'#faf6ef'}}>
+      <nav style={{background:'#7a9582',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
         <div style={{display:'flex',gap:'2rem'}}>
           {['dashboard','families','reports','templates','settings'].map(p => (
-            <a key={p} href={'/' + p} style={{color: p==='templates' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='templates' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+            <a key={p} href={'/' + p} style={{color: p==='templates' ? 'white' : '#dce5d8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='templates' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
           ))}
         </div>
       </nav>
@@ -53,7 +53,7 @@ export default function Templates() {
             <h1 style={{fontSize:'1.5rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>Task Templates</h1>
             <p style={{color:'#6b7280',fontSize:'0.875rem',marginTop:'0.25rem'}}>12-week postpartum task library</p>
           </div>
-          <button onClick={() => setShowForm(true)} style={{display:'flex',alignItems:'center',gap:'0.5rem',background:'#2c4a3e',color:'white',padding:'0.5rem 1.25rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
+          <button onClick={() => setShowForm(true)} style={{display:'flex',alignItems:'center',gap:'0.5rem',background:'#7a9582',color:'white',padding:'0.5rem 1.25rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>
             <Plus size={15}/> New Template
           </button>
         </div>
@@ -97,7 +97,7 @@ export default function Templates() {
                 </select>
               </div>
               <div style={{gridColumn:'1/-1'}}>
-                <button type="submit" style={{background:'#2c4a3e',color:'white',padding:'0.5rem 1.5rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>Save Template</button>
+                <button type="submit" style={{background:'#7a9582',color:'white',padding:'0.5rem 1.5rem',borderRadius:'0.5rem',border:'none',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer'}}>Save Template</button>
               </div>
             </form>
           </div>

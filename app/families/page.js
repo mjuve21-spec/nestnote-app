@@ -26,19 +26,19 @@ export default function Families() {
   });
 
   return (
-    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
-      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div style={{minHeight:'100vh',background:'#faf6ef'}}>
+      <nav style={{background:'#7a9582',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white'}}>NestNote</span>
         <div style={{display:'flex',gap:'2rem'}}>
           {['dashboard','families','reports','templates','settings'].map(p => (
-            <a key={p} href={'/' + p} style={{color: p==='families' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='families' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+            <a key={p} href={'/' + p} style={{color: p==='families' ? 'white' : '#dce5d8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='families' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
           ))}
         </div>
       </nav>
       <main style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.5rem'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1.5rem'}}>
           <h1 style={{fontSize:'1.5rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>{showArchived ? 'Archived Families' : 'Families'}</h1>
-          <a href='/families/add' style={{background:'#2c4a3e',color:'white',padding:'0.5rem 1rem',borderRadius:'0.5rem',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>+ Add Family</a>
+          <a href='/families/add' style={{background:'#7a9582',color:'white',padding:'0.5rem 1rem',borderRadius:'0.5rem',textDecoration:'none',fontSize:'0.875rem',fontWeight:'500'}}>+ Add Family</a>
         </div>
 
         <div style={{display:'flex',gap:'0.5rem',marginBottom:'1rem'}}>
@@ -51,7 +51,7 @@ export default function Families() {
           />
           <button
             onClick={() => setShowArchived(!showArchived)}
-            style={{padding:'0.5rem 1rem',background: showArchived ? '#2c4a3e' : '#f3f4f6',color: showArchived ? 'white' : '#374151',border:'1px solid #e5e7eb',borderRadius:'0.5rem',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer',whiteSpace:'nowrap'}}
+            style={{padding:'0.5rem 1rem',background: showArchived ? '#7a9582' : '#f3f4f6',color: showArchived ? 'white' : '#374151',border:'1px solid #e5e7eb',borderRadius:'0.5rem',fontSize:'0.875rem',fontWeight:'500',cursor:'pointer',whiteSpace:'nowrap'}}
           >
             {showArchived ? 'Show Active' : 'Show Archived'}
           </button>

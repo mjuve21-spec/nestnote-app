@@ -28,12 +28,12 @@ export default function Reports() {
   const checkinsToday = checkins.filter(c => new Date(c.created_at).toDateString() === today).length;
 
   return (
-    <div style={{minHeight:'100vh',background:'#f5f4f2'}}>
-      <nav style={{background:'#2c4a3e',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+    <div style={{minHeight:'100vh',background:'#faf6ef'}}>
+      <nav style={{background:'#7a9582',padding:'0 1.5rem',height:'56px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <span style={{fontWeight:'700',fontSize:'1.1rem',color:'white',letterSpacing:'-0.3px'}}>NestNote</span>
         <div style={{display:'flex',gap:'2rem'}}>
           {['dashboard','families','reports','templates','settings'].map(p => (
-            <a key={p} href={'/' + p} style={{color: p==='reports' ? 'white' : '#94b5a8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='reports' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
+            <a key={p} href={'/' + p} style={{color: p==='reports' ? 'white' : '#dce5d8', textDecoration:'none', fontSize:'0.875rem', fontWeight: p==='reports' ? '600' : '400', textTransform:'capitalize'}}>{p}</a>
           ))}
         </div>
       </nav>
@@ -44,8 +44,8 @@ export default function Reports() {
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1rem',marginBottom:'2rem'}}>
           {[
-            {label:'Total Check-ins', value: checkins.length, icon: CheckSquare, color:'#2c4a3e'},
-            {label:'Families Served', value: families.length, icon: Users, color:'#2c4a3e'},
+            {label:'Total Check-ins', value: checkins.length, icon: CheckSquare, color:'#7a9582'},
+            {label:'Families Served', value: families.length, icon: Users, color:'#7a9582'},
             {label:'Flags Raised', value: flagged, icon: AlertTriangle, color:'#dc2626'},
             {label:'Check-ins Today', value: checkinsToday, icon: TrendingUp, color:'#d97706'},
           ].map(({label,value,icon:Icon,color}) => (
