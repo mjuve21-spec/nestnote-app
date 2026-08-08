@@ -7,18 +7,25 @@ const supabase = createClient();
 
 export default function Dashboard() {
   const [families, setFamilies] = useState([]);
+  const [checkins, setCheckins] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchFamilies() {
-      const { data } = await supabase.from('families').select('*').eq('archived', false).order('created_at', { ascending: false });
-      setFamilies(data || []);
+    async function fetchData() {
+      const [{ data: fam }, { data: chk }] = await Promise.all([
+        supabase.from('families').select('*').eq('archived', false).order('created_at', { ascending: false }),
+        supabase.from('checkins').select('*'),
+      ]);
+      setFamilies(fam || []);
+      setCheckins(chk || []);
       setLoading(false);
     }
-    fetchFamilies();
+    fetchData();
   }, []);
 
   const flagged = families.filter(f => f.status === 'flagged').length;
+  const today = new Date().toDateString();
+  const checkinsToday = checkins.filter(c => new Date(c.created_at).toDateString() === today).length;
 
   return (
     <div style={{minHeight:'100vh',background:'#faf6ef'}}>
@@ -37,9 +44,9 @@ export default function Dashboard() {
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1rem',marginBottom:'2rem'}}>
           {[
-            {icon: Users, label:'Active Families', value: families.length, color:'#7a9582'},
-            {icon: AlertTriangle, label:'Flagged', value: flagged, color:'#dc2626'},
-            {icon: CheckSquare, label:'Check-ins Today', value:'--', color:'#7a9582'},
+            {icon: Users, label:'Active Families', value: loading ? '--' : families.length, color:'#7a9582'},
+            {icon: AlertTriangle, label:'Flagged', value: loading ? '--' : flagged, color:'#dc2626'},
+            {icon: CheckSquare, label:'Check-ins Today', value: loading ? '--' : checkinsToday, color:'#7a9582'},
             {icon: TrendingUp, label:'Tasks Due', value:'--', color:'#d97706'},
           ].map(({icon: Icon, label, value, color}) => (
             <div key={label} style={{background:'white',borderRadius:'0.75rem',padding:'1.25rem',border:'1px solid #e5e7eb'}}>
