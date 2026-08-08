@@ -9,14 +9,16 @@ export default function FamilyDetail() {
   const { id } = useParams();
   const [family, setFamily] = useState(null);
   const [checkins, setCheckins] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
   const [archiving, setArchiving] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const [form, setForm] = useState({ mood: '3', pain: '0', bleeding: 'none', notes: '' });
 
-  useEffect(() => { fetchFamily(); fetchCheckins(); }, [id]);
+  useEffect(() => { fetchFamily(); fetchCheckins(); fetchTasks(); }, [id]);
 
   async function fetchFamily() {
     const { data } = await supabase.from('families').select('*').eq('id', id).single();
@@ -27,6 +29,41 @@ export default function FamilyDetail() {
   async function fetchCheckins() {
     const { data } = await supabase.from('checkins').select('*').eq('family_id', id).order('created_at', { ascending: false });
     setCheckins(data || []);
+  }
+
+  async function fetchTasks() {
+    const { data } = await supabase
+      .from('tasks')
+      .select('*, templates(task_name, category, week, assigned_to)')
+      .eq('family_id', id);
+    const sorted = (data || []).sort((a, b) => (a.templates?.week || 0) - (b.templates?.week || 0));
+    setTasks(sorted);
+  }
+
+  async function toggleTask(task) {
+    const done = !task.completed;
+    setTasks(tasks.map(t => t.id === task.id ? { ...t, completed: done } : t));
+    await supabase
+      .from('tasks')
+      .update({ completed: done, completed_at: done ? new Date().toISOString() : null })
+      .eq('id', task.id);
+  }
+
+  async function generateTasks() {
+    if (!family.birth_type) {
+      alert('Set a birth type for this family first (use Edit), then generate tasks.');
+      return;
+    }
+    setGenerating(true);
+    const { data: templates } = await supabase.from('templates').select('id, birth_type');
+    const relevant = (templates || []).filter(t => t.birth_type === 'All' || t.birth_type === family.birth_type);
+    if (relevant.length > 0) {
+      await supabase.from('tasks').insert(
+        relevant.map(t => ({ family_id: id, template_id: t.id, completed: false }))
+      );
+    }
+    setGenerating(false);
+    fetchTasks();
   }
 
   async function submitCheckin(e) {
@@ -67,12 +104,21 @@ export default function FamilyDetail() {
     setTimeout(() => setCopied(false), 2000);
   }
 
+  // How many weeks postpartum, from the birth date.
+  function currentWeek() {
+    if (!family?.birth_date) return null;
+    const days = (Date.now() - new Date(family.birth_date).getTime()) / 86400000;
+    return Math.max(1, Math.floor(days / 7) + 1);
+  }
+
   if (loading) return <div style={{minHeight:'100vh',background:'#faf6ef',display:'flex',alignItems:'center',justifyContent:'center'}}><p style={{color:'#6b7280'}}>Loading...</p></div>;
   if (!family) return <div style={{minHeight:'100vh',background:'#faf6ef',display:'flex',alignItems:'center',justifyContent:'center'}}><p style={{color:'#6b7280'}}>Family not found.</p></div>;
 
   const moodLabel = ['','Very Low','Low','Okay','Good','Great'];
   const bleedingColors = { none: '#dcfce7', light: '#fef9c3', moderate: '#fed7aa', heavy: '#fee2e2' };
   const bleedingText = { none: '#16a34a', light: '#ca8a04', moderate: '#ea580c', heavy: '#dc2626' };
+  const week = currentWeek();
+  const openTasks = tasks.filter(t => !t.completed).length;
 
   return (
     <div style={{minHeight:'100vh',background:'#faf6ef'}}>
@@ -114,6 +160,7 @@ export default function FamilyDetail() {
             <div>
               <h1 style={{fontSize:'1.5rem',fontWeight:'700',color:'#1a1a1a',margin:0}}>{family.primary_name}</h1>
               {family.partner_name && <p style={{color:'#6b7280',fontSize:'0.875rem',marginTop:'0.25rem'}}>{family.partner_name}</p>}
+              {week && <p style={{color:'#7a9582',fontSize:'0.8rem',marginTop:'0.35rem',fontWeight:'600'}}>Week {week} postpartum</p>}
             </div>
             <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
               <span style={{fontSize:'0.75rem',padding:'0.375rem 0.875rem',borderRadius:'9999px',fontWeight:'600',background: family.status==='flagged' ? '#fee2e2' : '#dcfce7', color: family.status==='flagged' ? '#dc2626' : '#16a34a'}}>
@@ -145,6 +192,49 @@ export default function FamilyDetail() {
               </div>
             ) : null)}
           </div>
+        </div>
+
+        <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',padding:'1.5rem',marginBottom:'1rem'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1rem'}}>
+            <h2 style={{fontWeight:'600',color:'#1a1a1a',margin:0,fontSize:'0.95rem'}}>
+              Care Plan {tasks.length > 0 && <span style={{color:'#6b7280',fontWeight:'400'}}>· {openTasks} open of {tasks.length}</span>}
+            </h2>
+            {tasks.length === 0 && (
+              <button onClick={generateTasks} disabled={generating} style={{background:'#7a9582',color:'white',padding:'0.375rem 1rem',borderRadius:'0.5rem',border:'none',fontSize:'0.8rem',fontWeight:'500',cursor:'pointer'}}>
+                {generating ? 'Generating...' : 'Generate Care Plan'}
+              </button>
+            )}
+          </div>
+
+          {tasks.length === 0 ? (
+            <p style={{color:'#6b7280',fontSize:'0.875rem',textAlign:'center',padding:'1.5rem 0'}}>
+              No care plan yet. Generate one from the task templates.
+            </p>
+          ) : (
+            <div style={{display:'flex',flexDirection:'column',gap:'0.5rem'}}>
+              {tasks.map(t => {
+                const due = week && t.templates?.week <= week;
+                return (
+                  <div key={t.id} onClick={() => toggleTask(t)} style={{display:'flex',alignItems:'center',gap:'0.875rem',padding:'0.75rem 1rem',borderRadius:'0.5rem',border:'1px solid #e5e7eb',background: t.completed ? '#f9fafb' : due ? '#fffbeb' : 'white',cursor:'pointer'}}>
+                    <div style={{width:'20px',height:'20px',minWidth:'20px',borderRadius:'0.35rem',border:`2px solid ${t.completed ? '#7a9582' : '#d1d5db'}`,background: t.completed ? '#7a9582' : 'white',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:'0.75rem',fontWeight:'700'}}>
+                      {t.completed && '✓'}
+                    </div>
+                    <div style={{flex:1}}>
+                      <p style={{margin:0,fontSize:'0.875rem',fontWeight:'500',color: t.completed ? '#9ca3af' : '#1a1a1a',textDecoration: t.completed ? 'line-through' : 'none'}}>
+                        {t.templates?.task_name || 'Task'}
+                      </p>
+                      <p style={{margin:'0.15rem 0 0',fontSize:'0.75rem',color:'#6b7280'}}>
+                        Week {t.templates?.week} · {t.templates?.category} · {t.templates?.assigned_to}
+                      </p>
+                    </div>
+                    {!t.completed && due && (
+                      <span style={{fontSize:'0.7rem',padding:'0.2rem 0.6rem',borderRadius:'9999px',background:'#fef3c7',color:'#d97706',fontWeight:'600'}}>due</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <div style={{background:'white',borderRadius:'0.75rem',border:'1px solid #e5e7eb',padding:'1.5rem'}}>
