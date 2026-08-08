@@ -30,10 +30,16 @@ export default function LoginPage() {
         router.refresh()
       }
     } else {
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { data, error } = await supabase.auth.signUp({ email, password })
       if (error) {
         setError(error.message)
+      } else if (data.session) {
+        // Email confirmation is off, so sign-up returns a live session.
+        // Send them straight in rather than asking for an email that won't arrive.
+        router.push('/dashboard')
+        router.refresh()
       } else {
+        // Confirmation is on: no session until they click the emailed link.
         setSuccess('Check your email to confirm your account, then log in.')
         setMode('login')
       }
@@ -83,6 +89,7 @@ export default function LoginPage() {
                 style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1.5px solid #dde8e3', borderRadius: '8px', fontSize: '0.95rem', color: '#2d4a3e', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
                 onFocus={(e) => e.target.style.borderColor = '#4a9e7e'}
                 onBlur={(e) => e.target.style.borderColor = '#dde8e3'} />
+              {mode === 'signup' && <p style={{ fontSize: '0.75rem', color: '#7a9e8e', margin: '0.4rem 0 0' }}>At least 6 characters.</p>}
             </div>
 
             {error && <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', borderRadius: '8px', padding: '0.65rem 0.85rem', fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</div>}
