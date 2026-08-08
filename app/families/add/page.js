@@ -28,9 +28,8 @@ export default function AddFamily() {
     setError(null);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('Current user:', user);
-      const { data, error } = await supabase.from('families').insert([formData]);
-      console.log('Insert result:', { data, error });
+      if (!user) throw new Error('You must be logged in to add a family.');
+      const { data, error } = await supabase.from('families').insert([{ ...formData, user_id: user.id }]);
       if (error) throw error;
       router.push('/families');
     } catch (err) {
